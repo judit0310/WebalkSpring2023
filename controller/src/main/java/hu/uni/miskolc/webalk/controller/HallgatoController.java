@@ -7,12 +7,15 @@ import hu.uni.miskolc.webalk.dao.exceptions.HallgatoNemTalalhatoException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.validation.Valid;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 @Controller
@@ -22,9 +25,9 @@ public class HallgatoController {
 
     @ModelAttribute("hallgato")
     public HallgatoDTO hallgato(){
-        HallgatoDTO h = new HallgatoDTO();
+        return new HallgatoDTO();
+        //h.setSzuletesiDatum(LocalDate.now().minusDays(1));
         //h.setEmail("cica");
-        return h;
     }
 
     public HallgatoController(@Autowired HallgatoService hallgatoService) {
@@ -54,16 +57,17 @@ public class HallgatoController {
 
     @GetMapping("/ujhallgato")
     public ModelAndView addHallgato(){
-            ModelAndView mav = new ModelAndView("hallgatoForm");
-            return mav;
+            return new ModelAndView("hallgatoForm");
     }
 
     @PostMapping("/ujhallgato")
-    public ModelAndView addHallgato(@ModelAttribute HallgatoDTO hallgato){
+    public ModelAndView addHallgato(@Valid @ModelAttribute("hallgato") HallgatoDTO hallgato, BindingResult bindingResult){
+        if (bindingResult.hasErrors()) {
+            return new ModelAndView("hallgatoForm");
+        }
         try {
             hallgatoService.addHallgato(HallgatoDTO.convertHallgatoDTOToHallgato(hallgato));
-            ModelAndView mav = new ModelAndView("redirect:hallgatok");
-            return mav;
+            return new ModelAndView("redirect:hallgatok");
         } catch (HallgatoMarLetezik e) {
             ModelAndView mav = new ModelAndView("hallgatoForm");
             mav.addObject("message","A(z)"+hallgato.getId()+" azonosító már foglalt");

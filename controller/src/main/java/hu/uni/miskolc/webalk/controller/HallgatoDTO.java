@@ -3,27 +3,32 @@ package hu.uni.miskolc.webalk.controller;
 import hu.uni.miskolc.webalk.Hallgato;
 import hu.uni.miskolc.webalk.Nem;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
+import javax.validation.constraints.*;
 import java.time.LocalDate;
 
 public class HallgatoDTO {
 
+    @Min(value = 0)
     private int id;
-
+    @NotEmpty
+    @Pattern(regexp = "^[a-zA-z0-9]{6}", message = "6 hosszúnak kell lennie")
     private String neptunKod;
-
+    @Size(min = 7, max = 40)
     private String teljesNev;
-
+    @Email
     private String email;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    @Past
+    @NotNull
     private LocalDate szuletesiDatum;
 
     private Nem nem;
 
 
     public static Hallgato convertHallgatoDTOToHallgato(HallgatoDTO dto){
-        Hallgato h = new Hallgato(dto.id, dto.neptunKod, dto.teljesNev, dto.email, dto.szuletesiDatum, dto.nem);
-        return h;
+        return new Hallgato(dto.id, dto.neptunKod, dto.teljesNev, dto.email, dto.szuletesiDatum, dto.nem);
     }
 
     public int getId() {
