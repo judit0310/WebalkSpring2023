@@ -11,6 +11,7 @@ import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class HallgatoService {
@@ -50,4 +51,8 @@ public class HallgatoService {
         return dao.getHallgatoById(id);
     }
 
+
+    public List<Hallgato> getHallgatoByNem(Nem nem){
+        return dao.getAllHallgato().stream().filter(h -> h.getNem().equals(nem)).collect(Collectors.toList());
+    }
 }
