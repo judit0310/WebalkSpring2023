@@ -8,6 +8,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@page isELIgnored="false"%>
 <html>
 <head>
     <title>Hallgató felvitele</title>
@@ -20,21 +21,29 @@
     <legend>Azonosítók</legend>
     <form:label path="id" for="azonosito">Azonosító</form:label>
     <form:input path="id" type="text" id="azonosito"/>
+    <form:errors path="id"></form:errors>
+    <h6 style="color: red">${message}</h6>
+
+
 <br>
     <form:label path="neptunKod">Neptun Kód</form:label>
     <form:input path="neptunKod" type="text"/>
+    <form:errors path="neptunKod"></form:errors>
 
 </fieldset>
     <fieldset>
         <legend>Alap adatok</legend>
         <form:label path="teljesNev">Teljes név</form:label>
         <form:input path="teljesNev" type="text"/>
+        <form:errors path="teljesNev"></form:errors>
 <br>
         <form:label path="email">Email</form:label>
         <form:input path="email" type="text"/>
+        <form:errors path="email"></form:errors>
 <br>
         <form:label path="szuletesiDatum">Születési dátum</form:label>
         <form:input path="szuletesiDatum" type="date"/>
+        <form:errors path="szuletesiDatum"></form:errors>
 <br>
         <form:label path="Nem" for="nem">Nem</form:label>
         <form:select path="nem">

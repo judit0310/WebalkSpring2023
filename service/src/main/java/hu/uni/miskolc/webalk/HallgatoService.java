@@ -11,6 +11,7 @@ import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class HallgatoService {
@@ -50,4 +51,23 @@ public class HallgatoService {
         return dao.getHallgatoById(id);
     }
 
+    public List<Hallgato> getHallgatokByNem(Nem nem){
+        List<Hallgato> result =  dao.getAllHallgato().stream().filter(h -> h.getNem().equals(nem)).collect(Collectors.toList());
+        return result;
+    }
+
+    public List<Hallgato> getHallgatokEvekKozott(int fromYear, int toYear) {
+        List<Hallgato> hallgatok = getHallgatok();
+        List<Hallgato> result = new ArrayList<>();
+        for (Hallgato h : hallgatok){
+            if (h.getSzuletesiDatum().getYear()>= fromYear && h.getSzuletesiDatum().getYear() <=toYear){
+                result.add(h);
+            }
+        }
+        return result;
+    }
+
+    public List<Hallgato> getHallgatokByNeptunKod(String neptunKod) {
+       return getHallgatok().stream().filter(h -> h.getNeptunKod().equalsIgnoreCase(neptunKod)).collect(Collectors.toList());
+    }
 }

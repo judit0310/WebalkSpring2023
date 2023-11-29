@@ -57,7 +57,7 @@ public class HallgatoDAOMongo implements HallgatoDAO {
     public Hallgato getHallgatoById(int id) throws HallgatoNemTalalhatoException {
         Hallgato hallgato = collection.find(Filters.eq("_id", id)).first();
         if(hallgato == null){
-            throw new HallgatoNemTalalhatoException();
+            throw new HallgatoNemTalalhatoException(id);
         }
         return hallgato;
     }
